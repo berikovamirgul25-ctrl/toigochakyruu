@@ -1,785 +1,325 @@
 <!DOCTYPE html>
 <html lang="ky">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#eee0d4">
-  <meta name="description" content="Айдананын кыз узатуу тоюна чакыруу">
-  <title>Кыз узатуу — Айдана</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --cream: #f5eee7;
-      --paper: #fffaf4;
-      --gold: #b58a4b;
-      --gold-dark: #876332;
-      --ink: #514338;
-      --line: rgba(181,138,75,.38);
-    }
-
-    * { box-sizing: border-box; }
-
-    html { scroll-behavior: smooth; }
-
-    body {
-      margin: 0;
-      color: var(--ink);
-      background: var(--cream);
-      font-family: "Manrope", sans-serif;
-      font-weight: 300;
-    }
-
-    button { font: inherit; }
-    .hidden { display: none !important; }
-
-    /* БАШКЫ КОНВЕРТ */
-
-    .intro {
-      min-height: 100svh;
-      display: grid;
-      place-items: center;
-      padding: 24px;
-      background:
-        linear-gradient(135deg, rgba(255,250,244,.86), rgba(229,211,194,.84)),
-        url("assets/ulуттук-зер-буюмдар-1.jpg") center/cover;
-      overflow: hidden;
-    }
-
-    .envelope-wrap {
-      width: min(680px, 100%);
-      text-align: center;
-    }
-
-    .intro-note {
-      color: var(--gold-dark);
-      letter-spacing: .22em;
-      text-transform: uppercase;
-      font-size: 10px;
-      margin-bottom: 20px;
-    }
-
-    .envelope {
-      position: relative;
-      width: 100%;
-      aspect-ratio: 1.48 / 1;
-      max-height: 430px;
-      border: 1px solid rgba(181,138,75,.55);
-      border-radius: 5px;
-      background: linear-gradient(145deg, #fffaf4, #ead8c7);
-      box-shadow: 0 24px 65px rgba(80,55,35,.18);
-      cursor: pointer;
-      isolation: isolate;
-      transition: transform .35s ease, box-shadow .35s ease;
-    }
-
-    .envelope:hover {
-      transform: translateY(-4px);
-    }
-
-    .envelope::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background:
-        linear-gradient(145deg, transparent 49.7%, rgba(181,138,75,.23) 50%, transparent 50.4%),
-        linear-gradient(215deg, transparent 49.7%, rgba(181,138,75,.23) 50%, transparent 50.4%);
-      z-index: 1;
-    }
-
-    .env-flap {
-      position: absolute;
-      inset: 0 0 auto;
-      height: 58%;
-      background: linear-gradient(145deg, #fffdf9, #e7d2bd);
-      clip-path: polygon(0 0,100% 0,50% 100%);
-      z-index: 3;
-      transform-origin: top;
-      transition: transform 1s ease, opacity .8s ease;
-    }
-
-    .env-border {
-      position: absolute;
-      inset: 13px;
-      border: 1px solid var(--line);
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .env-corner {
-      position: absolute;
-      color: var(--gold);
-      font-size: clamp(22px,5vw,38px);
-      z-index: 5;
-    }
-
-    .env-corner.tl { top:18px; left:22px; }
-    .env-corner.tr { top:18px; right:22px; }
-    .env-corner.bl { bottom:18px; left:22px; }
-    .env-corner.br { bottom:18px; right:22px; }
-
-    .env-title {
-      position: absolute;
-      z-index: 6;
-      inset: 30% 10% auto;
-      color: var(--gold-dark);
-      font-family: "Great Vibes", cursive;
-      font-size: clamp(48px,10vw,86px);
-      line-height: 1.1;
-    }
-
-    .seal {
-      position: absolute;
-      z-index: 7;
-      left: 50%;
-      top: 68%;
-      transform: translate(-50%,-50%);
-      width: 76px;
-      height: 76px;
-      border-radius: 50%;
-      display: grid;
-      place-items: center;
-      color: #fff2d8;
-      font-size: 30px;
-      border: 3px double #f5dcae;
-      background: radial-gradient(circle at 35% 30%, #d7b36f, #95672d 75%);
-      box-shadow: 0 5px 12px rgba(76,48,20,.28);
-    }
-
-    .click-hint {
-      margin: 22px 0 0;
-      color: #806b57;
-      font-size: 13px;
-      letter-spacing: .08em;
-    }
-
-    .opening .env-flap {
-      transform: rotateX(180deg);
-      opacity: .35;
-    }
-
-    .opening .envelope {
-      transform: scale(1.04);
-      opacity: 0;
-      transition: all 1.1s ease .55s;
-    }
-
-    /* НЕГИЗГИ САЙТ */
-
-    .site {
-      animation: fadeIn 1.1s ease both;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(15px); }
-      to { opacity: 1; transform: none; }
-    }
-
-    .hero {
-      min-height: 100svh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 72px 22px;
-      position: relative;
-      overflow: hidden;
-      background:
-        linear-gradient(rgba(250,245,239,.83),rgba(250,245,239,.93)),
-        url("assets/улуттук-зер-буюмдар-2.jpg") center/cover;
-    }
-
-    .hero-inner {
-      width: min(980px,100%);
-      text-align: center;
-      position: relative;
-    }
-
-    .eyebrow {
-      color: var(--gold-dark);
-      letter-spacing: .28em;
-      text-transform: uppercase;
-      font-size: 11px;
-    }
-
-    h1 {
-      font: clamp(54px,11vw,104px)/1 "Great Vibes", cursive;
-      color: var(--gold-dark);
-      margin: 18px 0 8px;
-      font-weight: 400;
-    }
-
-    .ornament {
-      color: var(--gold);
-      font-size: 27px;
-      letter-spacing: .25em;
-      margin: 12px 0 22px;
-    }
-
-    /* АЙДАНАНЫН СҮРӨТҮ */
-
-    .portrait-frame {
-      width: min(360px,78vw);
-      height: min(500px,112vw);
-      margin: 25px auto 28px;
-      border: 1px solid var(--gold);
-      padding: 9px;
-      background: rgba(255,250,244,.72);
-      box-shadow: 0 16px 45px rgba(91,66,44,.13);
-      position: relative;
-    }
-
-    .portrait-frame img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .photo-placeholder {
-      width: 100%;
-      height: 100%;
-      display: grid;
-      place-items: center;
-      text-align: center;
-      padding: 25px;
-      background: linear-gradient(145deg,#eee0d4,#fffaf5);
-      color: #927957;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .intro-copy {
-      max-width: 680px;
-      margin: 0 auto;
-      font: clamp(18px,3vw,23px)/1.7 "Cormorant Garamond",serif;
-    }
-
-    /* ЧАКЫРУУ ТЕКСТИ */
-
-    .section {
-      padding: 78px 22px;
-      text-align: center;
-    }
-
-    .section-inner {
-      width: min(760px,100%);
-      margin: auto;
-    }
-
-    .section-label {
-      color: var(--gold-dark);
-      letter-spacing: .22em;
-      font-size: 10px;
-      text-transform: uppercase;
-    }
-
-    h2 {
-      font: clamp(36px,7vw,54px)/1.1 "Great Vibes",cursive;
-      color: var(--gold-dark);
-      font-weight: 400;
-      margin: 13px 0 25px;
-    }
-
-    .invitation-text {
-      font: 21px/1.8 "Cormorant Garamond",serif;
-    }
-
-    /* ТОЙ МААЛЫМАТТАРЫ */
-
-    .details {
-      background: linear-gradient(145deg,#fffaf5,#eee0d4);
-      border-top: 1px solid var(--line);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2,1fr);
-      gap: 14px;
-      margin: 30px 0;
-    }
-
-    .detail {
-      padding: 24px 14px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.48);
-    }
-
-    .detail .symbol {
-      color: var(--gold);
-      font-size: 23px;
-      margin-bottom: 10px;
-    }
-
-    .detail small {
-      display: block;
-      color: #927957;
-      letter-spacing: .13em;
-      font-size: 10px;
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-
-    .detail strong {
-      font: 22px "Cormorant Garamond",serif;
-      font-weight: 600;
-    }
-
-    .hosts {
-      font: clamp(30px,6vw,43px) "Great Vibes",cursive;
-      color: var(--gold-dark);
-      margin: 10px 0;
-    }
-
-    /* АРТКА САНОО */
-
-    .countdown {
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 10px;
-      max-width: 530px;
-      margin: 30px auto 0;
-    }
-
-    .timebox {
-      padding: 17px 6px;
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,.5);
-    }
-
-    .timebox b {
-      display: block;
-      font: clamp(27px,6vw,38px) "Cormorant Garamond",serif;
-      color: var(--gold-dark);
-    }
-
-    .timebox span {
-      font-size: 9px;
-      letter-spacing: .1em;
-      color: #927957;
-      text-transform: uppercase;
-    }
-
-    .map-button {
-      display: inline-block;
-      margin-top: 22px;
-      padding: 13px 25px;
-      border: 1px solid var(--gold);
-      color: var(--gold-dark);
-      text-decoration: none;
-      letter-spacing: .08em;
-      font-size: 12px;
-      background: rgba(255,255,255,.45);
-    }
-
-    .map-button:hover {
-      background: var(--gold);
-      color: white;
-    }
-
-    /* АЯГЫ */
-
-    .footer {
-      padding: 50px 20px 65px;
-      text-align: center;
-      background: #e9d9cb;
-    }
-
-    .footer p {
-      margin: 5px;
-      color: #826b54;
-      font: 20px "Cormorant Garamond",serif;
-    }
-
-    /* МУЗЫКА */
-
-    .music-control {
-      position: fixed;
-      right: 17px;
-      bottom: 17px;
-      z-index: 20;
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      border: 1px solid var(--gold);
-      background: rgba(255,250,244,.94);
-      color: var(--gold-dark);
-      box-shadow: 0 5px 20px rgba(0,0,0,.12);
-      cursor: pointer;
-      font-size: 19px;
-    }
-
-    @media(max-width:520px) {
-      .detail-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 9px;
-      }
-
-      .detail { padding: 19px 8px; }
-      .detail strong { font-size: 19px; }
-      .countdown { gap: 6px; }
-      .timebox { padding: 13px 3px; }
-      .env-title { inset: 33% 6% auto; }
-    }
-
-    @media(prefers-reduced-motion:reduce) {
-      *,*::before,*::after {
-        scroll-behavior: auto !important;
-        transition: none !important;
-        animation: none !important;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Айдананын кыз узатуу тою</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ background:#f1e5da;
+ color:#735b43;
+ font-family:'Cormorant Garamond',serif;
+ text-align:center;
+}
+.hidden{display:none!important}
+
+.cover{
+ min-height:100vh;
+ display:flex;
+ align-items:center;
+ justify-content:center;
+ padding:20px;
+ background:linear-gradient(#eee0d2aa,#eee0d2aa),url('конверт.jpeg') center/cover;
+}
+.envelope{
+ width:min(550px,95vw);
+ padding:65px 15px;
+ background:#fff8ef;
+ border:2px solid #c6a16a;
+ box-shadow:0 10px 40px #80604444;
+ cursor:pointer;
+ position:relative;
+}
+.envelope h1{
+ font:clamp(55px,12vw,90px) 'Great Vibes';
+ color:#b18a4e;
+ margin:15px 0;
+}
+.envelope p{letter-spacing:3px;font-size:13px}
+.seal{
+ display:inline-block;
+ border-radius:50%;
+ background:#b18a4e;
+ color:white;
+ padding:17px;
+ font-size:25px;
+}
+.hero{padding:55px 15px}
+h2{
+ font:48px 'Great Vibes';
+ color:#b18a4e;
+}
+.hero-photo{
+ width:min(380px,90%);
+ max-height:620px;
+ object-fit:cover;
+ border:8px solid #fffaf3;
+ box-shadow:0 10px 30px #80604433;
+}
+.name{
+ font:75px 'Great Vibes';
+ color:#b18a4e;
+ margin:20px 0;
+}
+p{
+ font-size:21px;
+ line-height:1.7;
+ padding:0 15px;
+}
+.section{padding:50px 15px}
+.gold{
+ background:#fff9f2;
+ border-top:1px solid #c9a36c;
+ border-bottom:1px solid #c9a36c;
+}
+.host{
+ font:55px 'Great Vibes';
+ color:#b18a4e;
+}
+.details{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ max-width:550px;
+ margin:25px auto;
+ gap:12px;
+}
+.detail{
+ background:#fff;
+ padding:20px 5px;
+ border:1px solid #c9a36c;
+}
+.detail small{
+ display:block;
+ letter-spacing:2px;
+ margin-bottom:10px;
+}
+.detail strong{font-size:21px}
+.gallery{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:12px;
+ max-width:750px;
+ margin:25px auto;
+}
+.gallery img{
+ width:100%;
+ height:260px;
+ object-fit:cover;
+ border:5px solid white;
+}
+.gallery img:first-child{
+ grid-column:span 2;
+ height:400px;
+}
+.map{
+ display:inline-block;
+ color:#fff;
+ background:#aa854b;
+ padding:14px 28px;
+ text-decoration:none;
+ margin:15px;
+}
+.count{
+ display:flex;
+ justify-content:center;
+ gap:8px;
+ flex-wrap:wrap;
+}
+.time{
+ background:#fff;
+ border:1px solid #c9a36c;
+ padding:13px;
+ min-width:65px;
+}
+.time b{display:block;font-size:26px}
+.time small{font-size:11px}
+footer{
+ background:#e6d5c6;
+ padding:45px 15px;
+}
+.music-btn{
+ position:fixed;
+ bottom:20px;
+ right:20px;
+ width:50px;
+ height:50px;
+ border-radius:50%;
+ background:#fff8ef;
+ color:#a77c42;
+ border:1px solid #b18a4e;
+ font-size:23px;
+ z-index:10;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- КОНВЕРТ -->
-
-  <main id="intro" class="intro">
-    <div class="envelope-wrap">
-
-      <div class="intro-note">
-        Сиз үчүн өзгөчө чакыруу
-      </div>
-
-      <button class="envelope" id="openInvite" aria-label="Чакыруу конвертин ачуу">
-
-        <span class="env-border"></span>
-
-        <span class="env-corner tl">❧</span>
-        <span class="env-corner tr">❧</span>
-        <span class="env-corner bl">❧</span>
-        <span class="env-corner br">❧</span>
-
-        <span class="env-title">Кыз узатуу</span>
-
-        <span class="env-flap"></span>
-
-        <span class="seal">❀</span>
-
-      </button>
-
-      <p class="click-hint">
-        ЧАКЫРУУНУ АЧУУ ҮЧҮН БАСЫҢЫЗ
-      </p>
-
-    </div>
-  </main>
-
-  <!-- САЙТТЫН НЕГИЗГИ БӨЛҮГҮ -->
-
-  <div id="site" class="site hidden">
-
-    <header class="hero">
-
-      <div class="hero-inner">
-
-        <div class="eyebrow">
-          Ак тилек менен чакырабыз
-        </div>
-
-        <h1>Кыз узатуу</h1>
-
-        <div class="ornament">❧ ✧ ❧</div>
-
-        <div class="portrait-frame">
-
-          <img
-            src="assets/aidana.jpg"
-            alt="Айдана"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='grid'"
-          >
-
-          <div class="photo-placeholder" style="display:none">
-            Бул жерге Айдананын жалгыз түшкөн сүрөтүн
-            <br>
-            <b>assets/aidana.jpg</b>
-            деген ат менен жүктөңүз
-          </div>
-
-        </div>
-
-        <h1>Айдана</h1>
-
-        <div class="ornament">✧ ❧ ✧</div>
-
-        <p class="intro-copy">
-          Өмүрүбүздөгү өзгөчө жана унутулгус күндөрдүн бири —
-          кыз узатуу тоюбузга Сиздерди чын жүрөктөн чакырабыз!
-        </p>
-
-      </div>
-
-    </header>
-
-    <!-- ЧАКЫРУУ ТЕКСТИ -->
-
-    <section class="section">
-
-      <div class="section-inner">
-
-        <div class="section-label">
-          Кадырлуу конокторубузга
-        </div>
-
-        <h2>Тойго чакыруу</h2>
-
-        <p class="invitation-text">
-          Кызыбыз Айдананы ак батабыз менен узатып,
-          кубанычыбызды сиздер менен бөлүшкүбүз келет.
-          Ушул жаркын күнү төрүбүздөн орун алып,
-          жакшы тилегиңиздерди айтып,
-          кубанычыбызга ортоктош болуп кетүүгө чакырабыз!
-        </p>
-
-        <div class="ornament">❧ ✧ ❧</div>
-
-        <div class="section-label">
-          Той ээлери
-        </div>
-
-        <div class="hosts">
-          Алмаз &amp; Жылдыз
-        </div>
-
-        <p class="invitation-text">
-          Тойго келип, конок болуп кетиңиздер!
-        </p>
-
-      </div>
-
-    </section>
-
-    <!-- ТОЙДУН МААЛЫМАТТАРЫ -->
-
-    <section class="section details">
-
-      <div class="section-inner">
-
-        <div class="section-label">
-          Кубанычтуу күндүн маалыматы
-        </div>
-
-        <h2>Тойдун күнү</h2>
-
-        <div class="detail-grid">
-
-          <div class="detail">
-            <div class="symbol">✧</div>
-            <small>Күнү</small>
-            <strong>30-ноябрь, 2027</strong>
-          </div>
-
-          <div class="detail">
-            <div class="symbol">◷</div>
-            <small>Башталышы</small>
-            <strong>16:00</strong>
-          </div>
-
-          <div class="detail">
-            <div class="symbol">⌖</div>
-            <small>Шаар</small>
-            <strong>Бишкек шаары</strong>
-          </div>
-
-          <div class="detail">
-            <div class="symbol">❀</div>
-            <small>Өткөрүлүүчү жай</small>
-            <strong>Ресторан «Ала-Тоо»</strong>
-          </div>
-
-        </div>
-
-        <a
-          class="map-button"
-          href="https://www.google.com/maps/search/?api=1&query=Ресторан+Ала-Тоо+Бишкек"
-          target="_blank"
-          rel="noopener"
-        >
-          КАРТАДАН КӨРҮҮ ↗
-        </a>
-
-        <h2 style="margin-top:55px">
-          Тойго чейин
-        </h2>
-
-        <div class="countdown" aria-label="Тойго калган убакыт">
-
-          <div class="timebox">
-            <b id="days">—</b>
-            <span>Күн</span>
-          </div>
-
-          <div class="timebox">
-            <b id="hours">—</b>
-            <span>Саат</span>
-          </div>
-
-          <div class="timebox">
-            <b id="minutes">—</b>
-            <span>Мүнөт</span>
-          </div>
-
-          <div class="timebox">
-            <b id="seconds">—</b>
-            <span>Секунд</span>
-          </div>
-
-        </div>
-
-      </div>
-
-    </section>
-
-    <!-- АЯКТОО -->
-
-    <footer class="footer">
-
-      <p>Ак тилек, ак бата менен...</p>
-
-      <h2 style="margin:10px 0">
-        Айдана
-      </h2>
-
-      <p>Келгениңиздерге кубанычтабыз!</p>
-
-    </footer>
-
+<!-- БИРИНЧИ КОНВЕРТ -->
+
+<div class="cover" id="cover">
+ <div>
+  <div>СИЗ ҮЧҮН ӨЗГӨЧӨ ЧАКЫРУУ</div>
+  <div class="envelope" id="open">
+   <h1>Айдана</h1>
+   <div class="seal">❀</div>
+   <p>ЧАКЫРУУНУ АЧУУ</p>
   </div>
+  <p>Сизди өзгөчө күнгө чакырабыз</p>
+ </div>
+</div>
 
-  <!-- МУЗЫКА -->
+<!-- НЕГИЗГИ САЙТ -->
 
-  <audio
-    id="bgMusic"
-    src="assets/music.mp3"
-    preload="auto"
-    loop
-  ></audio>
+<main id="site" class="hidden">
 
-  <button
-    id="musicToggle"
-    class="music-control hidden"
-    aria-label="Музыканы токтотуу"
-  >
-    ♫
-  </button>
+<section class="hero">
+ <p>АК ТИЛЕК, АК БАТА МЕНЕН</p>
+ <h2>Кыз узатуу</h2>
+ <img src="айдана.jpeg" class="hero-photo" alt="Айдана">
+ <div class="name">Айдана</div>
+ <p>
+ Урматтуу жакындарыбыз, тууган-урук,
+ дос-жарандар жана кадырлуу коноктор!
+ </p>
+ <p>
+ Сиздерди сүйүктүү кызыбыз Айдананын
+ кыз узатуу тоюна арналган ак дасторконубуздун
+ төрүнөн орун алып, кубанычыбызга
+ ортоктош болууга чакырабыз!
+ </p>
+</section>
 
-  <!-- JAVASCRIPT -->
+<section class="section gold">
+ <h2>Той ээлери</h2>
+ <img src="родители.jpeg"
+ style="width:min(420px,95%);border:7px solid white"
+ alt="Той ээлери">
+ <div class="host">Алмаз &amp; Жылдыз</div>
+ <p>
+ Тойго келип, конок болуп кетиңиздер!
+ </p>
+</section>
 
-  <script>
+<section class="section">
+ <h2>Улуттук мурас</h2>
+ <div class="gallery">
+  <img src="браслет.jpeg" alt="Улуттук билерик">
+  <img src="руки.jpeg" alt="Улуттук зер буюмдар">
+  <img src="айдана.jpeg" alt="Айдана">
+ </div>
+</section>
 
-    const openButton = document.getElementById("openInvite");
-    const intro = document.getElementById("intro");
-    const site = document.getElementById("site");
-    const music = document.getElementById("bgMusic");
-    const musicToggle = document.getElementById("musicToggle");
+<section class="section gold">
+ <h2>Тойдун маалыматы</h2>
 
-    // КОНВЕРТТИ АЧУУ ЖАНА МУЗЫКАНЫ КОШУУ
+ <div class="details">
+  <div class="detail">
+   <small>КҮНҮ</small>
+   <strong>30.11.2027</strong>
+  </div>
+  <div class="detail">
+   <small>УБАКТЫСЫ</small>
+   <strong>16:00</strong>
+  </div>
+  <div class="detail">
+   <small>ШААР</small>
+   <strong>Бишкек</strong>
+  </div>
+  <div class="detail">
+   <small>РЕСТОРАН</small>
+   <strong>Ала-Тоо</strong>
+  </div>
+ </div>
 
-    openButton.addEventListener("click", async () => {
+ <img src="ресторан.jpeg"
+ style="width:min(650px,95%);border:6px solid white"
+ alt="Ресторан Ала-Тоо">
 
-      intro.classList.add("opening");
+ <p>Сиздерди күтөбүз!</p>
 
-      try {
-        await music.play();
-      } catch (error) {
-        console.log("Музыканы ойнотуу мүмкүн болгон жок.", error);
-      }
+ <a class="map"
+ href="https://www.google.com/maps/search/?api=1&query=Ресторан+Ала-Тоо+Бишкек"
+ target="_blank">
+ КАРТАДАН КӨРҮҮ
+ </a>
+</section>
 
-      window.setTimeout(() => {
+<section class="section">
+ <h2>Тойго чейин калды</h2>
+ <div class="count">
+  <div class="time"><b id="days">0</b><small>КҮН</small></div>
+  <div class="time"><b id="hours">0</b><small>СААТ</small></div>
+  <div class="time"><b id="minutes">0</b><small>МҮНӨТ</small></div>
+  <div class="time"><b id="seconds">0</b><small>СЕКУНД</small></div>
+ </div>
+</section>
 
-        intro.classList.add("hidden");
+<footer>
+ <h2>Ак тилек менен...</h2>
+ <div class="host">Алмаз &amp; Жылдыз</div>
+ <p>Келгениңиздерге кубанычтабыз!</p>
+ <h2>Айдана</h2>
+</footer>
 
-        site.classList.remove("hidden");
+</main>
 
-        musicToggle.classList.remove("hidden");
+<audio id="music" src="музыка.mp3" loop></audio>
+<button class="music-btn hidden" id="musicBtn">♫</button>
 
-        window.scrollTo(0, 0);
+<script>
+const cover=document.getElementById('cover');
+const site=document.getElementById('site');
+const music=document.getElementById('music');
+const musicBtn=document.getElementById('musicBtn');
 
-      }, 1250);
+document.getElementById('open').addEventListener('click',async()=>{
+ cover.classList.add('hidden');
+ site.classList.remove('hidden');
+ musicBtn.classList.remove('hidden');
 
-    });
+ try{
+  await music.play();
+ }catch(e){
+  console.log('Музыканы кайра басып ойнотуңуз');
+ }
+ window.scrollTo(0,0);
+});
 
-    // МУЗЫКАНЫ ТОКТОТУУ ЖАНА КАЙРА КОШУУ
+musicBtn.addEventListener('click',async()=>{
+ if(music.paused){
+  try{await music.play();musicBtn.textContent='♫'}catch(e){}
+ }else{
+  music.pause();
+  musicBtn.textContent='♪';
+ }
+});
 
-    musicToggle.addEventListener("click", async () => {
+const target=new Date('2027-11-30T16:00:00+06:00').getTime();
 
-      if (music.paused) {
+function countdown(){
+ let diff=Math.max(0,target-Date.now());
 
-        try {
-          await music.play();
-          musicToggle.textContent = "♫";
-        } catch (error) {
-          console.log(error);
-        }
+ document.getElementById('days').textContent=
+ Math.floor(diff/86400000);
 
-      } else {
+ document.getElementById('hours').textContent=
+ Math.floor(diff%86400000/3600000);
 
-        music.pause();
-        musicToggle.textContent = "♪";
+ document.getElementById('minutes').textContent=
+ Math.floor(diff%3600000/60000);
 
-      }
-
-    });
-
-    // ТОЙГО КАЛГАН УБАКЫТ
-    // Бишкек убактысы UTC+6
-
-    const eventDate = new Date(
-      "2027-11-30T16:00:00+06:00"
-    ).getTime();
-
-    function updateCountdown() {
-
-      const now = Date.now();
-
-      let distance = eventDate - now;
-
-      if (distance <= 0) {
-
-        ["days","hours","minutes","seconds"].forEach(id => {
-          document.getElementById(id).textContent = "0";
-        });
-
-        return;
-      }
-
-      const days = Math.floor(distance / 86400000);
-
-      const hours = Math.floor(
-        (distance % 86400000) / 3600000
-      );
-
-      const minutes = Math.floor(
-        (distance % 3600000) / 60000
-      );
-
-      const seconds = Math.floor(
-        (distance % 60000) / 1000
-      );
-
-      document.getElementById("days").textContent = days;
-
-      document.getElementById("hours").textContent =
-        String(hours).padStart(2,"0");
-
-      document.getElementById("minutes").textContent =
-        String(minutes).padStart(2,"0");
-
-      document.getElementById("seconds").textContent =
-        String(seconds).padStart(2,"0");
-
-    }
-
-    updateCountdown();
-
-    setInterval(updateCountdown, 1000);
-
-  </script>
+ document.getElementById('seconds').textContent=
+ Math.floor(diff%60000/1000);
+}
+countdown();
+setInterval(countdown,1000);
+</script>
 
 </body>
 </html>
